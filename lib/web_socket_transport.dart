@@ -65,6 +65,7 @@ class WebSocketTransport implements ITransport {
         if (error != null) {
           return Future.error(error);
         }
+        return Future.value();
       },
 
       // onDone

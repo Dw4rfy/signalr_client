@@ -115,7 +115,8 @@ class HubConnection {
     _resetKeepAliveInterval();
 
     // Wait for the handshake to complete before marking connection as connected
-    await _handshakeCompleter.future;
+    if (_handshakeCompleter != null)
+      await _handshakeCompleter.future;
     _connectionState = HubConnectionState.Connected;
   }
 
@@ -241,9 +242,8 @@ class HubConnection {
     };
 
     final formatedMessage = _protocol.writeMessage(invocationMessage);
-    _sendMessage(formatedMessage).catchError((dynamic error)
-    {
-        completer.completeError(error);
+    _sendMessage(formatedMessage).catchError((dynamic error) {
+      completer.completeError(error);
       _callbacks.remove(invocationMessage.invocationId);
     });
 
